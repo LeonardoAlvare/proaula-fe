@@ -20,7 +20,7 @@ export default function Weka() {
     developerLevel: "",
     paymentProposal: 0,
     estimatedTime: 0,
-    categoryProyect: "",
+    categoryProject: "",
   });
 
   const [predictionResult, setPredictionResult] = useState<{
@@ -29,34 +29,34 @@ export default function Weka() {
   } | null>(null);
 
   const educationLevelOptions = [
-    { label: "Bachiller", value: 0 },
-    { label: "Semi-técnico", value: 1 },
-    { label: "Tecnólogo", value: 2 },
-    { label: "Profesional", value: 3 },
+    { label: "Bachiller", value: "Bachiller" },
+    { label: "Técnico", value: "Técnico" },
+    { label: "Tecnólogo", value: "Tecnólogo" },
+    { label: "Profesional", value: "Profesional" },
   ];
 
   const languagesOptions = [
-    { label: "Español", value: 1 },
-    { label: "Inglés", value: 2 },
-    { label: "Español e Inglés", value: 3 },
+    { label: "Español", value: "Español" },
+    { label: "Inglés", value: "Ingles" }, // ← sin tilde
+    { label: "Español e Inglés", value: "Español e Ingles" }, // ← sin tilde
   ];
 
   const workAvailabilityOptions = [
-    { label: "Tiempo Completo", value: 0 },
-    { label: "Medio Tiempo", value: 1 },
+    { label: "Tiempo Completo", value: "Tiempo completo" },
+    { label: "Medio Tiempo", value: "Medio tiempo" },
   ];
 
   const categoryOptions = [
-    { label: "Web", value: "0" },
-    { label: "Mobile", value: "1" },
-    { label: "Backend", value: "2" },
-    { label: "Fullstack", value: "3" },
+    { label: "Web", value: "Web" },
+    { label: "Mobile", value: "Mobile" },
+    { label: "Backend", value: "Backend" },
+    { label: "Fullstack", value: "Fullstack" },
   ];
 
   const experienceOptions = [
-    { label: "Junior", value: 0 },
-    { label: "Semi-Senior", value: 1 },
-    { label: "Senior", value: 2 },
+    { label: "Junior", value: "junior" },
+    { label: "Semi-Senior", value: "semi" },
+    { label: "Senior", value: "senior" },
   ];
 
   const handleDropdownChange = (name: string, value: string | number) => {
@@ -72,7 +72,7 @@ export default function Weka() {
 
     // Validación de campos numéricos >= 0
     if (
-      formData.edad < 0 ||
+      formData.edad < 17 ||
       formData.yearsExperience < 0 ||
       formData.paymentProposal < 0 ||
       formData.estimatedTime < 0
@@ -113,149 +113,183 @@ export default function Weka() {
         />
       </div>
 
-      <h1 className="text-center font-bold mb-4">
+      <h1 className="text-center font-bold mb-7">
         ¿Tu perfil de freelance sera aceptado a un proyecto?
       </h1>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-7"
+      >
         {/* Nombre */}
-        <FloatLabel>
-          <InputText
-            id="name"
-            name="name"
-            onChange={(e) => handleDropdownChange("nombre", e.target.value)}
-            className="w-full"
-          />
-          <label htmlFor="name">Nombre</label>
-        </FloatLabel>
+        <div>
+          <FloatLabel>
+            <InputText
+              id="name"
+              onChange={(e) => handleDropdownChange("nombre", e.target.value)}
+              className="w-full"
+            />
+            <label htmlFor="name">Nombre</label>
+          </FloatLabel>
+        </div>
 
         {/* Edad */}
-        <FloatLabel>
-          <InputNumber
-            id="edad"
-            value={formData.edad}
-            onValueChange={(e) => handleDropdownChange("edad", e.value ?? 0)}
-            className="w-full"
-            min={0}
-          />
-          <label htmlFor="edad">Edad</label>
-        </FloatLabel>
+        <div>
+          <FloatLabel>
+            <InputNumber
+              id="edad"
+              value={formData.edad}
+              onValueChange={(e) => handleDropdownChange("edad", e.value ?? 0)}
+              className="w-full"
+              min={18}
+            />
+            <label htmlFor="edad">Edad</label>
+          </FloatLabel>
+        </div>
 
         {/* Años de experiencia */}
-        <FloatLabel>
-          <InputNumber
-            id="yearsExperience"
-            value={formData.yearsExperience}
-            onValueChange={(e) =>
-              handleDropdownChange("yearsExperience", e.value ?? 0)
-            }
-            className="w-full"
-            min={0}
-          />
-          <label htmlFor="yearsExperience">Años de experiencia</label>
-        </FloatLabel>
+        <div>
+          <FloatLabel>
+            <InputNumber
+              id="yearsExperience"
+              value={formData.yearsExperience}
+              onValueChange={(e) =>
+                handleDropdownChange("yearsExperience", e.value ?? 0)
+              }
+              className="w-full"
+              min={0}
+            />
+            <label htmlFor="yearsExperience">Años de experiencia</label>
+          </FloatLabel>
+        </div>
 
         {/* Nivel educativo */}
-        <FloatLabel>
-          <Dropdown
-            inputId="educationLevel"
-            value={formData.educationLevel}
-            options={educationLevelOptions}
-            onChange={(e) => handleDropdownChange("educationLevel", e.value)}
-            className="w-full"
-          />
-          <label htmlFor="educationLevel">Nivel educativo</label>
-        </FloatLabel>
+        <div>
+          <FloatLabel>
+            <Dropdown
+              inputId="educationLevel"
+              value={formData.educationLevel}
+              options={educationLevelOptions}
+              onChange={(e) => handleDropdownChange("educationLevel", e.value)}
+              className="w-full"
+            />
+            <label htmlFor="educationLevel">Nivel educativo</label>
+          </FloatLabel>
+        </div>
 
         {/* Idiomas */}
-        <FloatLabel>
-          <Dropdown
-            inputId="languages"
-            value={formData.languages}
-            options={languagesOptions}
-            onChange={(e) => handleDropdownChange("languages", e.value)}
-            className="w-full"
-          />
-          <label htmlFor="languages">Idiomas</label>
-        </FloatLabel>
+        <div>
+          <FloatLabel>
+            <Dropdown
+              inputId="languages"
+              value={formData.languages}
+              options={languagesOptions}
+              onChange={(e) => handleDropdownChange("languages", e.value)}
+              className="w-full"
+            />
+            <label htmlFor="languages">Idiomas</label>
+          </FloatLabel>
+        </div>
 
         {/* Disponibilidad */}
-        <FloatLabel>
-          <Dropdown
-            inputId="workAvailability"
-            value={formData.workAvailability}
-            options={workAvailabilityOptions}
-            onChange={(e) => handleDropdownChange("workAvailability", e.value)}
-            className="w-full"
-          />
-          <label htmlFor="workAvailability">Disponibilidad</label>
-        </FloatLabel>
+        <div>
+          <FloatLabel>
+            <Dropdown
+              inputId="workAvailability"
+              value={formData.workAvailability}
+              options={workAvailabilityOptions}
+              onChange={(e) =>
+                handleDropdownChange("workAvailability", e.value)
+              }
+              className="w-full"
+            />
+            <label htmlFor="workAvailability">Disponibilidad</label>
+          </FloatLabel>
+        </div>
 
         {/* Categoría */}
-        <FloatLabel>
-          <Dropdown
-            inputId="category"
-            value={formData.category}
-            options={categoryOptions}
-            onChange={(e) => handleDropdownChange("category", e.value)}
-            className="w-full"
-          />
-          <label htmlFor="category">Categoría</label>
-        </FloatLabel>
+        <div>
+          <FloatLabel>
+            <Dropdown
+              inputId="category"
+              value={formData.category}
+              options={categoryOptions}
+              onChange={(e) => handleDropdownChange("category", e.value)}
+              className="w-full"
+            />
+            <label htmlFor="category">Categoría</label>
+          </FloatLabel>
+        </div>
 
         {/* Nivel del desarrollador */}
-        <FloatLabel>
-          <Dropdown
-            inputId="developerLevel"
-            value={formData.developerLevel}
-            options={experienceOptions}
-            onChange={(e) => handleDropdownChange("developerLevel", e.value)}
-            className="w-full"
-          />
-          <label htmlFor="developerLevel">Nivel del Desarrollador</label>
-        </FloatLabel>
+        <div>
+          <FloatLabel>
+            <Dropdown
+              inputId="developerLevel"
+              value={formData.developerLevel}
+              options={experienceOptions}
+              onChange={(e) => handleDropdownChange("developerLevel", e.value)}
+              className="w-full"
+            />
+            <label htmlFor="developerLevel">Nivel del Desarrollador</label>
+          </FloatLabel>
+        </div>
 
         {/* Propuesta de pago */}
-        <FloatLabel>
-          <InputNumber
-            id="paymentProposal"
-            value={formData.paymentProposal}
-            onValueChange={(e) =>
-              handleDropdownChange("paymentProposal", e.value ?? 0)
-            }
-            className="w-full"
-            min={0}
-          />
-          <label htmlFor="paymentProposal">Propuesta de pago</label>
-        </FloatLabel>
+        <div>
+          <FloatLabel>
+            <InputNumber
+              id="paymentProposal"
+              value={formData.paymentProposal}
+              onValueChange={(e) =>
+                handleDropdownChange("paymentProposal", e.value ?? 0)
+              }
+              className="w-full"
+              min={0}
+            />
+            <label htmlFor="paymentProposal">Propuesta de pago</label>
+          </FloatLabel>
+        </div>
 
         {/* Tiempo estimado */}
-        <FloatLabel>
-          <InputNumber
-            id="estimatedTime"
-            value={formData.estimatedTime}
-            onValueChange={(e) =>
-              handleDropdownChange("estimatedTime", e.value ?? 0)
-            }
-            className="w-full"
-            min={0}
-          />
-          <label htmlFor="estimatedTime">Tiempo estimado (días)</label>
-        </FloatLabel>
+        <div>
+          <FloatLabel>
+            <InputNumber
+              id="estimatedTime"
+              value={formData.estimatedTime}
+              onValueChange={(e) =>
+                handleDropdownChange("estimatedTime", e.value ?? 0)
+              }
+              className="w-full"
+              min={0}
+            />
+            <label htmlFor="estimatedTime">Tiempo estimado (días)</label>
+          </FloatLabel>
+        </div>
 
         {/* Categoría del proyecto */}
-        <FloatLabel>
-          <Dropdown
-            inputId="categoryProyect"
-            value={formData.categoryProyect}
-            options={categoryOptions}
-            onChange={(e) => handleDropdownChange("categoryProyect", e.value)}
+        <div>
+          <FloatLabel>
+            <Dropdown
+              inputId="categoryProject"
+              value={formData.categoryProject}
+              options={categoryOptions}
+              onChange={(e) => handleDropdownChange("categoryProject", e.value)}
+              className="w-full"
+            />
+            <label htmlFor="categoryProject">Categoría del proyecto</label>
+          </FloatLabel>
+        </div>
+
+        {/* Botón de enviar (ocupa toda la fila en responsive) */}
+        <div className="md:col-span-2">
+          <Button
+            type="submit"
+            label="Realizar predicción"
+            icon="pi pi-send"
             className="w-full"
           />
-          <label htmlFor="categoryProyect">Categoría del proyecto</label>
-        </FloatLabel>
-
-        <Button type="submit" label="Realizar predicción" icon="pi pi-send" />
+        </div>
       </form>
 
       {predictionResult && (

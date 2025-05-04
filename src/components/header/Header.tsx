@@ -3,9 +3,7 @@ import ProfileActions from "../profile-actions/ProfileActions";
 
 function Header() {
   const startContent = (
-    <>
-      <img alt="Logo" src="/logo.png" className="w-20 h-auto" />
-    </>
+    <>{/* <img alt="Logo" src="/logo.png" className="w-20 h-auto" /> */}</>
   );
 
   const endContent = (

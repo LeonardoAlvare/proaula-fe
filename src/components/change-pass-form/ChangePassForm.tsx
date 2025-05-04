@@ -9,7 +9,9 @@ import { ChangePassword } from "../../store/auth/types";
 
 const changePassSchema = Yup.object({
   oldPassword: Yup.string().required("La contraseña es requerida"),
-  newPassword: Yup.string().min(7, "Minimo 7 caracteres").required("La contraseña es requerida"),
+  newPassword: Yup.string()
+    .min(7, "Minimo 7 caracteres")
+    .required("La contraseña es requerida"),
   confirmNewPassword: Yup.string().oneOf(
     [Yup.ref("newPassword")],
     "Las contraseñas no coinciden"
@@ -98,7 +100,7 @@ function ChangePassForm() {
           {renderFieldError("newPassword")}
         </div>
 
-        <div className="col-span-2">
+        <div className="col-span-2 pb-10">
           <Controller
             control={control}
             name="confirmNewPassword"

@@ -13,10 +13,24 @@ export default function Landing() {
   const allProjects = useProjectStore((state) => state.allProjects);
   const [projectSelected, setProjectSelected] = useState<Project | undefined>();
   const [showForm, setShowForm] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     getAllProjects();
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 200);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const onEdit = (projectId: Project) => {
     setProjectSelected(projectId);
@@ -37,18 +51,16 @@ export default function Landing() {
       <LandingHeader />
 
       <section className="p-4 mt-4">
-        {
-          userLogged?._id && (
-            <div className="w-full flex justify-end items-center">
-              <Button
-                label="Publicar proyecto"
-                icon="pi pi-plus"
-                iconPos="right"
-                onClick={handleShowForm}
-              />
-            </div>
-          )
-        }
+        {userLogged?._id && (
+          <div className="w-full flex justify-end items-center">
+            <Button
+              label="Crear proyecto"
+              icon="pi pi-plus"
+              iconPos="right"
+              onClick={handleShowForm}
+            />
+          </div>
+        )}
 
         {allProjects.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -82,6 +94,15 @@ export default function Landing() {
         visible={showForm}
         onHide={onHideForm}
       />
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 w-12 h-12 bg-blue-600 text-white text-2xl rounded-full shadow-xl hover:bg-blue-700 hover:scale-110 transition-all duration-300 flex items-center justify-center z-50"
+          aria-label="Volver arriba"
+        >
+          ↑
+        </button>
+      )}
     </main>
   );
 }

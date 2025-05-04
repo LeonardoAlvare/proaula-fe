@@ -19,6 +19,7 @@ function Home() {
   const [projectSelected, setProjectSelected] = useState<Project | undefined>(
     undefined
   );
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     if (userLogged?.isFreelancer) {
@@ -27,6 +28,19 @@ function Home() {
       getProjectByUserId(userLogged?._id!);
     }
   }, [userLogged]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 200);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const handleShowForm = () => {
     setShowForm(!showForm);
@@ -46,7 +60,7 @@ function Home() {
     <section>
       <div className="w-full flex justify-end items-center">
         <Button
-          label="Publicar proyecto"
+          label="Crear proyecto"
           icon="pi pi-plus"
           iconPos="right"
           onClick={handleShowForm}
@@ -77,6 +91,16 @@ function Home() {
         visible={showForm}
         onHide={onHideForm}
       />
+
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition"
+          aria-label="Volver arriba"
+        >
+          ↑
+        </button>
+      )}
     </section>
   );
 }

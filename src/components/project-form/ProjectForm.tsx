@@ -6,7 +6,7 @@ import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Sidebar } from "primereact/sidebar";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import * as Yup from "yup";
 import { STATUS_PROJECT } from "../../consts";
 import { Project, ProjectDto } from "../../store/project/types";
@@ -163,6 +163,7 @@ function ProjectForm({ onHide, visible, defaultValues }: Props) {
                     invalid={!!errors.dateInit}
                     id="dateInit"
                     name="dateInit"
+                    minDate={new Date()}
                   />
                 </>
               )}
@@ -171,7 +172,7 @@ function ProjectForm({ onHide, visible, defaultValues }: Props) {
           {renderFieldError("dateInit")}
         </div>
 
-        <div className="col-span-1">
+        {/* <div className="col-span-1">
           <>
             <Controller
               name="dateEnd"
@@ -190,6 +191,43 @@ function ProjectForm({ onHide, visible, defaultValues }: Props) {
                   />
                 </>
               )}
+            />
+          </>
+          {renderFieldError("dateEnd")}
+        </div> */}
+        <div className="col-span-1">
+          <>
+            <Controller
+              name="dateEnd"
+              control={control}
+              render={({ field }) => {
+                const dateInit = useWatch({ control, name: "dateInit" });
+                const minDate =
+                  dateInit && !isNaN(new Date(dateInit).getTime())
+                    ? new Date(
+                        new Date(dateInit).setDate(
+                          new Date(dateInit).getDate() + 1
+                        )
+                      )
+                    : undefined;
+
+                return (
+                  <>
+                    <label htmlFor="dateEnd" className="block text-gray-700">
+                      Fecha de finalización
+                    </label>
+                    <Calendar
+                      {...field}
+                      value={new Date(field.value)}
+                      invalid={!!errors.dateEnd}
+                      id="dateEnd"
+                      name="dateEnd"
+                      minDate={minDate}
+                      disabled={!dateInit}
+                    />
+                  </>
+                );
+              }}
             />
           </>
           {renderFieldError("dateEnd")}
@@ -254,7 +292,7 @@ function ProjectForm({ onHide, visible, defaultValues }: Props) {
         )}
 
         <div className="col-span-2">
-          <Button loading={loading} label="Guardar" className="w-full" />
+          <Button loading={loading} label="Publicar" className="w-full" />
         </div>
       </form>
     </Sidebar>

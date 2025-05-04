@@ -18,7 +18,7 @@ const filterSchema = Yup.object({
 export default function LandingHeader() {
   const userLogged = useAuthStore((state) => state.userLogged);
   const findProject = useProjectStore((state) => state.getAllProjects);
-  const loadingProjects = useProjectStore((state) => state.loading);
+  // const loadingProjects = useProjectStore((state) => state.loading);
   const [_, debouncedValue, setInputValue] = useDebounce("", 400);
   const { register, formState, handleSubmit, watch } = useForm({
     resolver: yupResolver(filterSchema),
@@ -48,11 +48,9 @@ export default function LandingHeader() {
   return (
     <header className="bg-gray-800 rounded-b-xl text-white p-4">
       <div className=" flex justify-between items-center">
-        <NavLink to="/" className="text-2xl font-bold">
-          FXP
-        </NavLink>
+        <NavLink to="/" className="text-2xl font-bold w-32"></NavLink>
 
-        <nav>
+        <nav className="flex-1 flex justify-center">
           <ul className="flex space-x-4">
             <li>
               <NavLink to="/" className="hover:text-gray-400">
@@ -61,7 +59,7 @@ export default function LandingHeader() {
             </li>
             <li>
               <NavLink to="/profile" className="hover:text-gray-400">
-                perfil
+                Perfil
               </NavLink>
             </li>
             <li>
@@ -74,7 +72,7 @@ export default function LandingHeader() {
             </li>
             <li>
               <NavLink to="/weka" className="hover:text-gray-400">
-                weka
+                Weka
               </NavLink>
             </li>
           </ul>
@@ -95,7 +93,7 @@ export default function LandingHeader() {
       </div>
 
       <h1 className="font-bold mt-10">
-        <span className="font-bold text-4xl">FreelaXprex</span>
+        <span className="font-bold text-4xl">FreelaXpress</span>
         <span className="text-md text-gray-400">
           {" "}
           - Tu plataforma de proyectos freelance
@@ -108,14 +106,14 @@ export default function LandingHeader() {
             {...register("search")}
             invalid={!!errors.search}
             placeholder="Vacante"
-            className="rounded-r-none"
+            className="rounded-full"
           />
-          <Button
+          {/* <Button
             icon="pi pi-search"
             className="p-button-warning"
             label="Buscar"
             loading={loadingProjects}
-          />
+          /> */}
         </div>
         {renderFieldError("search")}
       </form>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import image from "../../assets/image.jpg";
 
 export default function Vlanding() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -126,7 +127,7 @@ export default function Vlanding() {
                 Conectamos talento con oportunidades
               </h1>
               <p className="text-xl text-gray-600">
-                FreelaXprex es la plataforma que une a freelancers talentosos
+                FreelaXpress es la plataforma que une a freelancers talentosos
                 con proyectos emocionantes. Encuentra trabajo o contrata
                 profesionales de forma rápida y segura.
               </p>
@@ -144,14 +145,15 @@ export default function Vlanding() {
                   Registrarse
                 </a>
               </div>
-              {/* <div className="flex items-center gap-2 text-sm text-gray-500">
-                <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
-                  Nuevo
-                </span>
-                <span>
-                  Ahora con verificación de perfiles para mayor seguridad
-                </span>
-              </div> */}
+            </div>
+
+            {/* Columna derecha: imagen */}
+            <div className="flex justify-center">
+              <img
+                src={image}
+                alt="Freelancers trabajando"
+                className="max-w-full h-auto rounded-lg shadow-lg"
+              />
             </div>
           </div>
         </section>

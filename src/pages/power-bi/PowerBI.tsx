@@ -19,7 +19,7 @@ function PowerBI() {
           className="mb-4"
           label="Volver"
           text
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/landing")}
         />
       </div>
 
