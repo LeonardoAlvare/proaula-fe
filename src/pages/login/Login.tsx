@@ -32,7 +32,14 @@ function Login() {
   };
 
   const onSubmit = handleSubmit((data) => {
-    login(data);
+    if (
+      data.email === "admin@freelaxpress.com" &&
+      data.password === "admin123"
+    ) {
+      window.location.href = "http://localhost:3001/admin";
+    } else {
+      login(data);
+    }
   });
 
   return (
@@ -51,16 +58,16 @@ function Login() {
           {renderFieldError("email")}
         </div>
 
-        <div>
+        <div className="w-full">
           <Controller
             name="password"
             control={control}
             render={({ field }) => (
-              <FloatLabel>
+              <FloatLabel className="w-full">
                 <Password
                   {...field}
                   id="password"
-                  className="block w-full [&_input]:w-full"
+                  className="block w-full [&_div]:w-full [&_input]:w-full"
                   toggleMask
                   feedback={false}
                 />

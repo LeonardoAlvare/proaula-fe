@@ -46,6 +46,18 @@ export default function Landing() {
     setShowForm(true);
   };
 
+  const sortedProjects = [...allProjects].sort((a, b) => {
+    const userId = String(userLogged?._id);
+    const getProjectOwnerId = (p: Project) =>
+      typeof p.userId === "object" && p.userId !== null
+        ? String((p.userId as any)._id)
+        : String(p.userId);
+
+    const aIsMine = getProjectOwnerId(a) === userId;
+    const bIsMine = getProjectOwnerId(b) === userId;
+    return Number(bIsMine) - Number(aIsMine);
+  });
+
   return (
     <main className="h-svh bg-gray-100">
       <LandingHeader />
@@ -64,7 +76,7 @@ export default function Landing() {
 
         {allProjects.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {allProjects.map((project) => (
+            {sortedProjects.map((project) => (
               <ProjectCard
                 key={project._id}
                 project={project}

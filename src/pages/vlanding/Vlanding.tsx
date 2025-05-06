@@ -2,10 +2,13 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import image from "../../assets/image.jpg";
+import useAuthStore from "../../store/auth/auth.store";
+import ProfileActions from "../../components/profile-actions/ProfileActions";
 
 export default function Vlanding() {
   const [menuOpen, setMenuOpen] = useState(false);
   const currentYear = new Date().getFullYear();
+  const userlogged = useAuthStore((state) => state.userLogged);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -16,51 +19,26 @@ export default function Vlanding() {
             FreelaXpress
           </a>
 
-          {/* Desktop Navigation */}
-          {/* <nav className="hidden md:flex space-x-6">
-            <a href="/projects" className="text-gray-700 hover:text-blue-600">
-              Proyectos
-            </a>
-            <a
-              href="/freelancers"
-              className="text-gray-700 hover:text-blue-600"
-            >
-              Freelancers
-            </a>
-            <a href="/about" className="text-gray-700 hover:text-blue-600">
-              Sobre Nosotros
-            </a>
-            <a href="/contact" className="text-gray-700 hover:text-blue-600">
-              Contacto
-            </a>
-          </nav> */}
-
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex space-x-4">
-            {/* <a
-              href="/login"
-              className="text-sm text-gray-600 hover:text-blue-600"
-            >
-              Iniciar sesión
-            </a> */}
-            <Link
-              to="/landing"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
-            >
-              Iniciar sesión
-            </Link>
-            {/* <a
-              href="/register"
-              className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-md"
-            >
-              Registrarse
-            </a> */}
-            <Link
-              to="/landing"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
-            >
-              Registrar
-            </Link>
+            {userlogged ? (
+              <ProfileActions />
+            ) : (
+              <div className="flex space-x-4">
+                <Link
+                  to="/auth/login"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+                >
+                  Iniciar sesión
+                </Link>
+                <Link
+                  to="/auth/register"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+                >
+                  Registrar
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -71,50 +49,6 @@ export default function Vlanding() {
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-
-        {/* Mobile Navigation */}
-        {/* {menuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-200">
-            <nav className="px-4 py-4 space-y-2">
-              <a
-                href="/projects"
-                className="block text-gray-700 hover:text-blue-600"
-              >
-                Proyectos
-              </a>
-              <a
-                href="/freelancers"
-                className="block text-gray-700 hover:text-blue-600"
-              >
-                Freelancers
-              </a>
-              <a
-                href="/about"
-                className="block text-gray-700 hover:text-blue-600"
-              >
-                Sobre Nosotros
-              </a>
-              <a
-                href="/contact"
-                className="block text-gray-700 hover:text-blue-600"
-              >
-                Contacto
-              </a>
-              <a
-                href="/login"
-                className="block text-gray-700 hover:text-blue-600 mt-2"
-              >
-                Iniciar sesión
-              </a>
-              <a
-                href="/register"
-                className="block mt-2 text-white bg-blue-600 hover:bg-blue-700 text-center py-2 rounded-md"
-              >
-                Registrarse
-              </a>
-            </nav>
-          </div>
-        )} */}
       </header>
 
       {/* Main Content */}
@@ -131,20 +65,6 @@ export default function Vlanding() {
                 con proyectos emocionantes. Encuentra trabajo o contrata
                 profesionales de forma rápida y segura.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <a
-                  href="/landing"
-                  className="inline-flex h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium items-center justify-center"
-                >
-                  Explorar proyectos
-                </a>
-                <a
-                  href="/landing"
-                  className="inline-flex h-10 px-4 py-2 border border-gray-300 bg-white hover:bg-gray-100 text-gray-900 rounded-md text-sm font-medium items-center justify-center"
-                >
-                  Registrarse
-                </a>
-              </div>
             </div>
 
             {/* Columna derecha: imagen */}

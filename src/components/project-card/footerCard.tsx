@@ -46,6 +46,7 @@ function FooterCard({ project, onApply, onDelete, onEdit }: Props) {
   };
 
   const isOwner = userLogged?._id === project.userId;
+  const isFreelance = userLogged?.isFreelancer;
 
   return (
     <section className="w-full flex gap-4 items-center justify-end">
@@ -79,7 +80,8 @@ function FooterCard({ project, onApply, onDelete, onEdit }: Props) {
         </div>
       )}
 
-      {!isOwner && (
+      {/* {(!isOwner || isFreelance) && ( */}
+      {!isOwner && isFreelance && (
         <div className="self-end">
           <Button
             label="Postularse"

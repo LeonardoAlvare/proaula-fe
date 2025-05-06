@@ -114,11 +114,11 @@ function Register() {
             control={control}
             name="password"
             render={({ field }) => (
-              <FloatLabel>
+              <FloatLabel className="w-full">
                 <Password
                   {...field}
                   id="password"
-                  className="block w-full [&_input]:w-full"
+                  className="block w-full [&_div]:w-full [&_input]:w-full"
                   toggleMask
                 />
                 <label htmlFor="password">Contraseña</label>
@@ -137,7 +137,7 @@ function Register() {
                 <Password
                   {...field}
                   id="confirmPassword"
-                  className="block w-full [&_input]:w-full"
+                  className="block w-full [&_div]:w-full [&_input]:w-full"
                   toggleMask
                   feedback={false}
                 />

@@ -68,7 +68,7 @@ function ChangePassForm() {
                   {...field}
                   value={field.value}
                   id="oldPassword"
-                  className="block w-full [&_input]:w-full"
+                  className="block w-full [&_div]:w-full [&_input]:w-full"
                   toggleMask
                   feedback={false}
                 />
@@ -91,7 +91,7 @@ function ChangePassForm() {
                   {...field}
                   value={field.value}
                   id="newPassword"
-                  className="block w-full [&_input]:w-full"
+                  className="block w-full [&_div]:w-full [&_input]:w-full"
                   toggleMask
                 />
               </>
@@ -116,7 +116,7 @@ function ChangePassForm() {
                   {...field}
                   value={field.value}
                   id="confirmNewPassword"
-                  className="block w-full [&_input]:w-full"
+                  className="block w-full [&_div]:w-full [&_input]:w-full"
                   toggleMask
                   feedback={false}
                 />

@@ -20,11 +20,7 @@ export default function ProfileActions() {
       icon: "pi pi-user",
       command: () => navigate(`/profile`),
     },
-    {
-      label: "PowerBI",
-      icon: "pi pi-cog",
-      command: () => navigate(`/power-bi`),
-    },
+
     {
       label: "Mis postulaciones",
       icon: "pi pi-list",

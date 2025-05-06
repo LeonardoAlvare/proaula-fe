@@ -172,29 +172,6 @@ function ProjectForm({ onHide, visible, defaultValues }: Props) {
           {renderFieldError("dateInit")}
         </div>
 
-        {/* <div className="col-span-1">
-          <>
-            <Controller
-              name="dateEnd"
-              control={control}
-              render={({ field }) => (
-                <>
-                  <label htmlFor="dateEnd" className="block text-gray-700">
-                    Fecha de finalización
-                  </label>
-                  <Calendar
-                    {...field}
-                    value={new Date(field.value)}
-                    invalid={!!errors.dateEnd}
-                    id="dateEnd"
-                    name="dateEnd"
-                  />
-                </>
-              )}
-            />
-          </>
-          {renderFieldError("dateEnd")}
-        </div> */}
         <div className="col-span-1">
           <>
             <Controller

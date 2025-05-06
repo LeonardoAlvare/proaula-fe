@@ -17,7 +17,11 @@ function ProtectedRoute({ children }: Props) {
     }
 
     if (userLogged && pathname.includes("auth")) {
-      navigate("/");
+      navigate("/landing");
+    }
+
+    if (userLogged && pathname === "/") {
+      navigate("/landing");
     }
 
     return () => {};

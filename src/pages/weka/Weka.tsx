@@ -4,11 +4,8 @@ import { FloatLabel } from "primereact/floatlabel";
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function Weka() {
-  const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     nombre: "",
     edad: 0,
@@ -103,16 +100,6 @@ export default function Weka() {
 
   return (
     <div className="p-6">
-      <div className="col-span-2">
-        <Button
-          icon="pi pi-arrow-left"
-          className="mb-4"
-          label="Volver"
-          text
-          onClick={() => navigate("/landing")}
-        />
-      </div>
-
       <h1 className="text-center font-bold mb-7">
         ¿Tu perfil de freelance sera aceptado a un proyecto?
       </h1>

@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import useProposalStore from "../../store/proposal/proposal.store";
 import { useEffect } from "react";
-import { Button } from "primereact/button";
 import { Panel } from "primereact/panel";
 import { Card } from "primereact/card";
 import { borderClassByStatus } from "../../helpers/util";
@@ -12,7 +11,6 @@ function Proposal() {
     (state) => state.getProposalsByUserId
   );
   const proposals = useProposalStore((state) => state.proposals);
-  const navigate = useNavigate();
 
   useEffect(() => {
     !!userId && getProposalsByUserId();
@@ -20,16 +18,6 @@ function Proposal() {
 
   return (
     <section>
-      <div>
-        <Button
-          icon="pi pi-arrow-left"
-          className="mb-4"
-          label="Volver"
-          text
-          onClick={() => navigate("/landing")}
-        />
-      </div>
-
       <Panel header="Postulaciones" className="mt-4">
         {proposals.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
