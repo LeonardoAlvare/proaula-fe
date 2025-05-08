@@ -4,6 +4,7 @@ import { FloatLabel } from "primereact/floatlabel";
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import { useState } from "react";
+import { Dialog } from "primereact/dialog";
 
 export default function Weka() {
   const [formData, setFormData] = useState({
@@ -93,20 +94,22 @@ export default function Weka() {
       const data = await response.json();
       console.log("Respuesta:", data);
       setPredictionResult(data);
+      setIsDialogVisible(true); // Mostrar el diálogo con el resultado
     } catch (error) {
       console.error("Error al hacer la predicción:", error);
     }
   };
 
+  const [isDialogVisible, setIsDialogVisible] = useState(false);
   return (
     <div className="p-6">
-      <h1 className="text-center font-bold mb-7">
+      <h1 className="text-xl text-center font-bold mb-10">
         ¿Tu perfil de freelance sera aceptado a un proyecto?
       </h1>
 
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-1 md:grid-cols-2 gap-7"
+        className="grid grid-cols-1 md:grid-cols-3 gap-7"
       >
         {/* Nombre */}
         <div>
@@ -238,38 +241,42 @@ export default function Weka() {
           </FloatLabel>
         </div>
 
-        {/* Tiempo estimado */}
-        <div>
-          <FloatLabel>
-            <InputNumber
-              id="estimatedTime"
-              value={formData.estimatedTime}
-              onValueChange={(e) =>
-                handleDropdownChange("estimatedTime", e.value ?? 0)
-              }
-              className="w-full"
-              min={0}
-            />
-            <label htmlFor="estimatedTime">Tiempo estimado (días)</label>
-          </FloatLabel>
-        </div>
+        <div className="md:col-span-3 flex flex-col md:flex-row justify-center gap-7">
+          {/* Tiempo estimado */}
+          <div className="w-full md:w-1/3">
+            <FloatLabel>
+              <InputNumber
+                id="estimatedTime"
+                value={formData.estimatedTime}
+                onValueChange={(e) =>
+                  handleDropdownChange("estimatedTime", e.value ?? 0)
+                }
+                className="w-full"
+                min={0}
+              />
+              <label htmlFor="estimatedTime">Tiempo estimado (días)</label>
+            </FloatLabel>
+          </div>
 
-        {/* Categoría del proyecto */}
-        <div>
-          <FloatLabel>
-            <Dropdown
-              inputId="categoryProject"
-              value={formData.categoryProject}
-              options={categoryOptions}
-              onChange={(e) => handleDropdownChange("categoryProject", e.value)}
-              className="w-full"
-            />
-            <label htmlFor="categoryProject">Categoría del proyecto</label>
-          </FloatLabel>
+          {/* Categoría del proyecto */}
+          <div className="w-full md:w-1/3">
+            <FloatLabel>
+              <Dropdown
+                inputId="categoryProject"
+                value={formData.categoryProject}
+                options={categoryOptions}
+                onChange={(e) =>
+                  handleDropdownChange("categoryProject", e.value)
+                }
+                className="w-full"
+              />
+              <label htmlFor="categoryProject">Categoría del proyecto</label>
+            </FloatLabel>
+          </div>
         </div>
 
         {/* Botón de enviar (ocupa toda la fila en responsive) */}
-        <div className="md:col-span-2">
+        <div className="md:col-span-3">
           <Button
             type="submit"
             label="Realizar predicción"
@@ -279,16 +286,29 @@ export default function Weka() {
         </div>
       </form>
 
-      {predictionResult && (
-        <div className="mt-6 p-4 border rounded shadow bg-gray-50">
-          <h3 className="text-lg font-semibold mb-2">
-            Resultado de la predicción:
-          </h3>
-          <p>
-            <strong>Predicción:</strong> {predictionResult.prediccion}
+      <Dialog
+        header="Resultado de la predicción"
+        visible={!!predictionResult}
+        onHide={() => setPredictionResult(null)}
+        className="w-full md:w-1/2"
+        pt={{
+          mask: { className: "bg-black bg-opacity-50" },
+          root: { className: "rounded-xl shadow-xl" },
+        }}
+      >
+        <div
+          className={`p-6 rounded-lg ${
+            predictionResult?.prediccion === "Aceptado"
+              ? "bg-red-100 text-red-800"
+              : "bg-green-100 text-green-800"
+          }`}
+        >
+          <p className="text-lg font-bold mb-4">
+            Predicción: {predictionResult?.prediccion}
           </p>
-          <ul>
-            {Object.entries(predictionResult.probabilidades).map(
+
+          <ul className="space-y-2">
+            {Object.entries(predictionResult?.probabilidades ?? {}).map(
               ([label, prob]) => (
                 <li key={label}>
                   <strong>{label}:</strong> {prob}%
@@ -297,7 +317,7 @@ export default function Weka() {
             )}
           </ul>
         </div>
-      )}
+      </Dialog>
     </div>
   );
 }

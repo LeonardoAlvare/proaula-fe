@@ -36,7 +36,7 @@ function Login() {
       data.email === "admin@freelaxpress.com" &&
       data.password === "admin123"
     ) {
-      window.location.href = "http://localhost:3001/admin";
+      window.location.href = "http://localhost:3000/admin";
     } else {
       login(data);
     }
