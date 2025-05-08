@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import useProjectStore from "../../store/project/project.store";
 import { useLocation } from "react-router-dom";
+import image from "../../assets/imagen_logo.png";
 
 import { useDebounce } from "primereact/hooks";
 import { useEffect } from "react";
@@ -49,15 +50,19 @@ export default function LandingHeader() {
   return (
     <header className="bg-gray-800 rounded-b-xl text-white p-4">
       <div className=" flex justify-between items-center">
-        <NavLink to="/" className="text-2xl font-bold w-32"></NavLink>
+        <NavLink to="/landing" className="text-2xl font-bold w-24">
+          <img src={image} />
+        </NavLink>
 
         <nav className="flex-1 flex justify-center">
           <ul className="flex space-x-4">
-            <li>
-              <NavLink to="/landing" className="hover:text-gray-400">
-                Inicio
-              </NavLink>
-            </li>
+            {location.pathname !== "/landing" && (
+              <li>
+                <NavLink to="/landing" className="hover:text-gray-400">
+                  Inicio
+                </NavLink>
+              </li>
+            )}
             <li>
               <NavLink to="/profile" className="hover:text-gray-400">
                 Perfil
@@ -73,7 +78,7 @@ export default function LandingHeader() {
             </li>
             <li>
               <NavLink to="/weka" className="hover:text-gray-400">
-                Weka
+                Prediccion
               </NavLink>
             </li>
           </ul>
