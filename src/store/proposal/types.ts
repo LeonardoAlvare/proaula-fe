@@ -20,6 +20,8 @@ export type ProposalDto = {
   userName: string;
   userEmail: string;
   status?: string | null;
+  salary: number;
+  days: number;
 };
 
 export type Proposal = ProposalDto & {

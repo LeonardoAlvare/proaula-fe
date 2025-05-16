@@ -4,6 +4,7 @@ export type UserState = {
 
 export type UserAction = {
   updateUser: (userId: string, user: UserDto) => Promise<void>;
+  getUserById: (userId: string) => Promise<UserDto | null>;
 };
 
 export type UserDto = {
@@ -13,6 +14,9 @@ export type UserDto = {
   password?: string;
   socialMedia?: string[];
   isFreelancer?: boolean;
+  idioma?: string[];
+  experiencia?: string;
+  categoria?: string[];
 };
 
 export type User = UserDto & {
