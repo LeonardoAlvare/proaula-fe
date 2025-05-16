@@ -10,7 +10,10 @@ import { Ripple } from "primereact/ripple";
 export default function ProfileActions() {
   const user = useAuthStore((state) => state.userLogged);
   const logout = useAuthStore((state) => state.logout);
-  const fullname = `${user?.name} ${user?.lastname}`;
+  // const fullname = `${user?.name} ${user?.lastname}`;
+  const fullname = `${user?.name || ""}${
+    user?.lastname ? ` ${user.lastname}` : ""
+  }`.trim();
   const menuLeft = useRef<Menu>(null);
   const navigate = useNavigate();
 

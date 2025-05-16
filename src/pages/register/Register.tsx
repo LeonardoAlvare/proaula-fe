@@ -11,6 +11,22 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import useAuthStore from "../../store/auth/auth.store";
 import { UserDto } from "../../store/user/types";
+import { Chips } from "primereact/chips";
+import { Dropdown } from "primereact/dropdown";
+
+export const Category = [
+  { label: "Junior", value: "Junior" },
+  { label: "Semi Senior", value: "SemiSenior" },
+  { label: "Senior", value: "Senior" },
+];
+
+const AvailableCategories = [
+  { name: "Web", key: "Web" },
+  { name: "Mobile", key: "Mobile" },
+  { name: "Backend", key: "Backend" },
+  { name: "Frontend", key: "Frontend" },
+  { name: "Fullstack", key: "Fullstack" },
+];
 
 const registerSchema = Yup.object({
   name: Yup.string().required("El nombre es requerido"),
@@ -29,6 +45,35 @@ const registerSchema = Yup.object({
     then: (schema) => schema.required("El usuario de Github es requerido"),
     otherwise: (schema) => schema.notRequired(),
   }),
+  idioma: Yup.array()
+    .of(Yup.string().required("Cada idioma no puede estar vacío"))
+    .when("isFreelancer", {
+      is: true,
+      then: (schema) =>
+        schema
+          .min(1, "Debes agregar al menos un idioma")
+          .required("Los idiomas son requeridos"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+  experience: Yup.string().when("isFreelancer", {
+    is: true,
+    then: (schema) =>
+      schema.required("La experiencia es requerida").oneOf(
+        Category.map((item) => item.value),
+        "Selecciona una experiencia válida"
+      ),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  categoria: Yup.array()
+    .of(Yup.string().required("Cada categoria no puede estar vacío"))
+    .when("isFreelancer", {
+      is: true,
+      then: (schema) =>
+        schema
+          .min(1, "Debes agregar al menos una categoria")
+          .required("Las categorias son requeridas"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
 });
 
 function Register() {
@@ -53,8 +98,10 @@ function Register() {
       ...rest,
       isFreelancer: rest.isFreelancer,
       socialMedia: (data.isFreelancer ? [github] : []) as string[],
+      idioma: data.idioma as string[],
+      experiencia: data.experience,
+      categoria: data.categoria as string[],
     };
-
     await registerUser(payload);
   });
 
@@ -172,18 +219,166 @@ function Register() {
         </div>
 
         {isFreelancer && (
-          <div className="col-span-2">
-            <FloatLabel>
-              <InputText
-                {...register("github")}
-                id="github"
-                name="github"
-                className="w-full"
+          <>
+            <div className="col-span-2">
+              <FloatLabel>
+                <InputText
+                  {...register("github")}
+                  id="github"
+                  name="github"
+                  className="w-full"
+                />
+                <label htmlFor="github">Github url</label>
+              </FloatLabel>
+              {renderFieldError("github")}
+            </div>
+
+            <div className="col-span-2">
+              <Controller
+                name="idioma"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <>
+                    <label
+                      htmlFor="idioma"
+                      className="block text-gray-700 mb-2"
+                    >
+                      Idiomas que manejas
+                    </label>
+                    <Chips
+                      {...field}
+                      id="idioma"
+                      name={field.name}
+                      value={field.value as string[]}
+                      // onChange={(e) => field.onChange(e.value)}
+                      className="w-full"
+                    />
+                    {fieldState.error && (
+                      <small className="p-error">
+                        {fieldState.error.message}
+                      </small>
+                    )}
+                  </>
+                )}
               />
-              <label htmlFor="github">Github url</label>
-            </FloatLabel>
-            {renderFieldError("name")}
-          </div>
+            </div>
+            <div className="col-span-2">
+              <Controller
+                name="experience"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <>
+                    <label
+                      htmlFor="experience"
+                      className="block text-gray-700 mb-2"
+                    >
+                      Nivel de experiencia
+                    </label>
+                    <Dropdown
+                      id="experience"
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.value)}
+                      options={Object.values(Category)}
+                      optionLabel="label"
+                      optionValue="value"
+                      placeholder="Selecciona tu nivel"
+                      className={`w-full ${
+                        fieldState.error ? "p-invalid" : ""
+                      }`}
+                    />
+                    {fieldState.error && (
+                      <small className="p-error">
+                        {fieldState.error.message}
+                      </small>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+
+            {/* <div className="col-span-2">
+              <Controller
+                name="categoria"
+                control={control}
+                defaultValue={[]}
+                render={({ field, fieldState }) => (
+                  <>
+                    <label className="block text-gray-700 mb-2">
+                      Selecciona tus categorías de especialización
+                    </label>
+                    <div className="flex flex-wrap gap-3">
+                      {AvailableCategories.map((category) => {
+                        return (
+                          <div
+                            key={category.key}
+                            className="flex align-items-center"
+                          >
+                            <Checkbox
+                              inputId={category.key}
+                              name="categoria"
+                              value={category.key}
+                              onChange={(e) => {
+                                const selected = field.value || [];
+                                if (e.checked) {
+                                  field.onChange([...selected, category.key]);
+                                } else {
+                                  field.onChange(
+                                    selected.filter(
+                                      (item) => item !== category.key
+                                    )
+                                  );
+                                }
+                              }}
+                              checked={
+                                field.value?.includes(category.key) || false
+                              }
+                            />
+                            <label htmlFor={category.key} className="ml-2">
+                              {category.name}
+                            </label>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    {fieldState.error && (
+                      <small className="p-error block">
+                        {fieldState.error.message}
+                      </small>
+                    )}
+                  </>
+                )}
+              />
+            </div> */}
+            <div className="col-span-2">
+              <Controller
+                name="categoria"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <>
+                    <label
+                      htmlFor="categoria"
+                      className="block text-gray-700 mb-2"
+                    >
+                      Categorias que manejas
+                    </label>
+                    <Chips
+                      {...field}
+                      id="categoria"
+                      name={field.name}
+                      value={field.value as string[]}
+                      // onChange={(e) => field.onChange(e.value)}
+                      className="w-full"
+                    />
+                    {fieldState.error && (
+                      <small className="p-error">
+                        {fieldState.error.message}
+                      </small>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+          </>
         )}
 
         <div className="col-span-2">

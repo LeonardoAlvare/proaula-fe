@@ -25,6 +25,23 @@ const useUserStore = create<UserState & UserAction>((set) => ({
       set({ loading: false });
     }
   },
+
+  getUserById: async (userId) => {
+    try {
+      set({ loading: true });
+      const response = await httpClient.get(`/user/${userId}`);
+
+      console.log("Respuesta completa:", response);
+
+      return response.data?.user || response.data;
+    } catch (error) {
+      console.error("Error detallado:", error);
+      showAlertError(error as any);
+      return null;
+    } finally {
+      set({ loading: false });
+    }
+  },
 }));
 
 export default useUserStore;

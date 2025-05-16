@@ -425,7 +425,6 @@ export default function Vlanding() {
                 ].map((social, index) => (
                   <a
                     key={index}
-                    href="#"
                     className={`w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 ${social.color} transition-colors duration-300`}
                   >
                     <i className={`${social.icon} text-lg`}></i>
@@ -474,10 +473,7 @@ export default function Vlanding() {
                 <ul className="space-y-3">
                   {section.links.map((link, j) => (
                     <li key={j}>
-                      <a
-                        href="#"
-                        className="hover:text-white transition-colors duration-200 flex items-start"
-                      >
+                      <a className="hover:text-white transition-colors duration-200 flex items-start">
                         <span className="inline-block w-1 h-1 bg-blue-500 rounded-full mt-2.5 mr-2"></span>
                         {link}
                       </a>
@@ -497,22 +493,13 @@ export default function Vlanding() {
               </p>
 
               <div className="flex space-x-6">
-                <a
-                  href="#"
-                  className="text-gray-500 hover:text-white transition-colors text-sm"
-                >
+                <a className="text-gray-500 hover:text-white transition-colors text-sm">
                   Términos de servicio
                 </a>
-                <a
-                  href="#"
-                  className="text-gray-500 hover:text-white transition-colors text-sm"
-                >
+                <a className="text-gray-500 hover:text-white transition-colors text-sm">
                   Política de privacidad
                 </a>
-                <a
-                  href="#"
-                  className="text-gray-500 hover:text-white transition-colors text-sm"
-                >
+                <a className="text-gray-500 hover:text-white transition-colors text-sm">
                   Cookies
                 </a>
               </div>
