@@ -58,12 +58,14 @@ export default function Landing() {
     return Number(bIsMine) - Number(aIsMine);
   });
 
+  const isFreelancer = userLogged?.isFreelancer;
+
   return (
     <main className="h-svh bg-gray-100">
       <LandingHeader />
 
       <section className="p-4 mt-4">
-        {userLogged?._id && (
+        {userLogged?._id && !isFreelancer && (
           <div className="w-full flex justify-end items-center">
             <Button
               label="Crear proyecto"

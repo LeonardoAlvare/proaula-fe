@@ -1,7 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
-import { Chips } from "primereact/chips";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
@@ -13,6 +12,7 @@ import { Project, ProjectDto } from "../../store/project/types";
 import { useEffect, useState } from "react";
 import useProjectStore from "../../store/project/project.store";
 import useAuthStore from "../../store/auth/auth.store";
+import { MultiSelect } from "primereact/multiselect";
 
 interface Props {
   onHide: () => void;
@@ -23,6 +23,7 @@ interface Props {
 const projectSchema = Yup.object({
   name: Yup.string().required("El nombre es requerido"),
   salary: Yup.number().required("El salario es requerido"),
+  freelancers: Yup.number().required("La cantidad de freelancers es requerido"),
   techs: Yup.array()
     .of(Yup.string())
     .required("Las tecnologias son requeridas"),
@@ -47,6 +48,7 @@ function ProjectForm({ onHide, visible, defaultValues }: Props) {
   const setFormValues = () => {
     setValue("name", defaultValues?.name!);
     setValue("salary", defaultValues?.salary!);
+    setValue("freelancers", defaultValues?.freelancers!);
     setValue("techs", defaultValues?.techs!);
     setValue("dateInit", defaultValues?.dateInit!);
     setValue("dateEnd", defaultValues?.dateEnd!);
@@ -61,10 +63,15 @@ function ProjectForm({ onHide, visible, defaultValues }: Props) {
   const { errors } = formState;
 
   const onSubmit = handleSubmit(async (data) => {
+    console.log("Tipo de freelancers:", typeof data.freelancers);
+    console.log("Valor de freelancers:", data.freelancers);
     const payload = {
       userId: user?._id,
       ...data,
     };
+
+    console.log("Payload completo:", payload);
+
     let isSuccessful = false;
 
     if (isEdit) {
@@ -131,15 +138,23 @@ function ProjectForm({ onHide, visible, defaultValues }: Props) {
             render={({ field }) => (
               <>
                 <label htmlFor="techs" className="block text-gray-700">
-                  Tecnologias
+                  Categorias
                 </label>
-                <Chips
+                <MultiSelect
                   {...field}
                   invalid={!!errors.techs}
                   name={field.name}
-                  value={field.value as string[]}
+                  value={field.value || []}
                   id="techs"
                   className="w-full"
+                  options={[
+                    "Desarrollo Web",
+                    "Desarrollo Móvil",
+                    "Desarrollo Backend",
+                    "Desarrollo Frontend",
+                    "Desarrollo en la Nube",
+                  ]}
+                  placeholder="Selecciona las categorías"
                 />
               </>
             )}
@@ -222,9 +237,29 @@ function ProjectForm({ onHide, visible, defaultValues }: Props) {
               id="salary"
               name="salary"
               className="w-full"
+              min={1}
             />
           </>
           {renderFieldError("salary")}
+        </div>
+
+        <div className="col-span-2">
+          <>
+            <label htmlFor="freelancers" className="block text-gray-700">
+              Freelancers
+            </label>
+            <InputText
+              {...register("freelancers")}
+              invalid={!!errors.freelancers}
+              type="number"
+              id="freelancers"
+              name="freelancers"
+              className="w-full"
+              min={1}
+              placeholder="freelancers requeridos"
+            />
+          </>
+          {renderFieldError("freelancers")}
         </div>
 
         <div className="col-span-2">
