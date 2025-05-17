@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useProposalStore from "../../store/proposal/proposal.store";
 import { useEffect } from "react";
 import { Panel } from "primereact/panel";
@@ -36,6 +36,16 @@ function Proposal() {
                 <p>
                   <strong className="mr-2">Estado:</strong>
                   {proposal.status}
+                </p>
+
+                <p>
+                  <strong className="mr-2">Salary:</strong>
+                  {proposal.salary}
+                </p>
+
+                <p>
+                  <strong className="mr-2">Tiempo:</strong>
+                  {proposal.days} días
                 </p>
               </Card>
             ))}
