@@ -13,6 +13,7 @@ import useAuthStore from "../../store/auth/auth.store";
 import { UserDto } from "../../store/user/types";
 import { Chips } from "primereact/chips";
 import { Dropdown } from "primereact/dropdown";
+import { MultiSelect } from "primereact/multiselect";
 
 export const Category = [
   { label: "Junior", value: "Junior" },
@@ -292,29 +293,31 @@ function Register() {
               <Controller
                 name="categoria"
                 control={control}
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <>
-                    <label
-                      htmlFor="categoria"
-                      className="block text-gray-700 mb-2"
-                    >
-                      Categorias que manejas
+                    <label htmlFor="categoria" className="block text-gray-700">
+                      Categorias
                     </label>
-                    <Chips
+                    <MultiSelect
                       {...field}
-                      id="categoria"
+                      invalid={!!errors.categoria}
                       name={field.name}
-                      value={field.value as string[]}
+                      value={field.value || []}
+                      id="categoria"
                       className="w-full"
+                      options={[
+                        "Desarrollo Web",
+                        "Desarrollo Móvil",
+                        "Desarrollo Backend",
+                        "Desarrollo Frontend",
+                        "Desarrollo en la Nube",
+                      ]}
+                      placeholder="Selecciona las categorías"
                     />
-                    {fieldState.error && (
-                      <small className="p-error">
-                        {fieldState.error.message}
-                      </small>
-                    )}
                   </>
                 )}
               />
+              {renderFieldError("categoria")}
             </div>
           </>
         )}
