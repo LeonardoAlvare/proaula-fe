@@ -1,8 +1,3 @@
-// import { Button } from "primereact/button";
-// import useAuthStore from "../../store/auth/auth.store";
-// import { Project } from "../../store/project/types";
-// import { useNavigate } from "react-router-dom";
-// import Swal from "sweetalert2";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputNumber } from "primereact/inputnumber";

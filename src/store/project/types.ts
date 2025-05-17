@@ -26,6 +26,7 @@ export type ProjectDto = {
   dateInit: Date;
   dateEnd: Date;
   salary: number;
+  freelancers: number;
   status?: StatusProject;
 };
 
