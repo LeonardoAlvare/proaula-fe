@@ -20,14 +20,6 @@ export const Category = [
   { label: "Senior", value: "Senior" },
 ];
 
-const AvailableCategories = [
-  { name: "Web", key: "Web" },
-  { name: "Mobile", key: "Mobile" },
-  { name: "Backend", key: "Backend" },
-  { name: "Frontend", key: "Frontend" },
-  { name: "Fullstack", key: "Fullstack" },
-];
-
 const registerSchema = Yup.object({
   name: Yup.string().required("El nombre es requerido"),
   lastname: Yup.string().required("El apellido es requerido"),
@@ -296,59 +288,6 @@ function Register() {
               />
             </div>
 
-            {/* <div className="col-span-2">
-              <Controller
-                name="categoria"
-                control={control}
-                defaultValue={[]}
-                render={({ field, fieldState }) => (
-                  <>
-                    <label className="block text-gray-700 mb-2">
-                      Selecciona tus categorías de especialización
-                    </label>
-                    <div className="flex flex-wrap gap-3">
-                      {AvailableCategories.map((category) => {
-                        return (
-                          <div
-                            key={category.key}
-                            className="flex align-items-center"
-                          >
-                            <Checkbox
-                              inputId={category.key}
-                              name="categoria"
-                              value={category.key}
-                              onChange={(e) => {
-                                const selected = field.value || [];
-                                if (e.checked) {
-                                  field.onChange([...selected, category.key]);
-                                } else {
-                                  field.onChange(
-                                    selected.filter(
-                                      (item) => item !== category.key
-                                    )
-                                  );
-                                }
-                              }}
-                              checked={
-                                field.value?.includes(category.key) || false
-                              }
-                            />
-                            <label htmlFor={category.key} className="ml-2">
-                              {category.name}
-                            </label>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    {fieldState.error && (
-                      <small className="p-error block">
-                        {fieldState.error.message}
-                      </small>
-                    )}
-                  </>
-                )}
-              />
-            </div> */}
             <div className="col-span-2">
               <Controller
                 name="categoria"
@@ -366,7 +305,6 @@ function Register() {
                       id="categoria"
                       name={field.name}
                       value={field.value as string[]}
-                      // onChange={(e) => field.onChange(e.value)}
                       className="w-full"
                     />
                     {fieldState.error && (

@@ -8,8 +8,8 @@ import ProfileActions from "../../components/profile-actions/ProfileActions";
 
 export default function Vlanding() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const currentYear = new Date().getFullYear();
   const userlogged = useAuthStore((state) => state.userLogged);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -53,26 +53,52 @@ export default function Vlanding() {
                   </svg>
                   <span>Iniciar sesión</span>
                 </Link>
-                <Link
-                  to="/auth/register"
-                  className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+
+                <div className="relative">
+                  <button
+                    onClick={() => setIsRegisterOpen(!isRegisterOpen)}
+                    className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                    />
-                  </svg>
-                  <span>Registrar</span>
-                </Link>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                      />
+                    </svg>
+                    <span>Registrar</span>
+                  </button>
+
+                  {/* Menú desplegable */}
+                  {isRegisterOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                      <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-200">
+                        ¿Qué quieres ser?
+                      </div>
+                      <Link
+                        to="/auth/register"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                        onClick={() => setIsRegisterOpen(false)}
+                      >
+                        Freelancer
+                      </Link>
+                      <Link
+                        to="/auth/register"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                        onClick={() => setIsRegisterOpen(false)}
+                      >
+                        Usuario
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
