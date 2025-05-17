@@ -8,7 +8,14 @@ import useUserStore from "../../store/user/user.store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { UserDto } from "../../store/user/types";
 import useAuthStore from "../../store/auth/auth.store";
-import { Checkbox } from "primereact/checkbox";
+import { Chips } from "primereact/chips";
+import { Dropdown } from "primereact/dropdown";
+
+export const Category = [
+  { label: "Junior", value: "Junior" },
+  { label: "Semi Senior", value: "SemiSenior" },
+  { label: "Senior", value: "Senior" },
+];
 
 const userSchema = Yup.object({
   name: Yup.string().required("El nombre es requerido"),
@@ -22,6 +29,35 @@ const userSchema = Yup.object({
     then: (schema) => schema.required("El usuario de Github es requerido"),
     otherwise: (schema) => schema.notRequired(),
   }),
+  idioma: Yup.array()
+    .of(Yup.string().required("Cada idioma no puede estar vacío"))
+    .when("isFreelancer", {
+      is: true,
+      then: (schema) =>
+        schema
+          .min(1, "Debes agregar al menos un idioma")
+          .required("Los idiomas son requeridos"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+  experience: Yup.string().when("isFreelancer", {
+    is: true,
+    then: (schema) =>
+      schema.required("La experiencia es requerida").oneOf(
+        Category.map((item) => item.value),
+        "Selecciona una experiencia válida"
+      ),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  categoria: Yup.array()
+    .of(Yup.string().required("Cada categoria no puede estar vacío"))
+    .when("isFreelancer", {
+      is: true,
+      then: (schema) =>
+        schema
+          .min(1, "Debes agregar al menos una categoria")
+          .required("Las categorias son requeridas"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
 });
 
 function UserForm() {
@@ -48,6 +84,9 @@ function UserForm() {
     setValue("email", userLogged?.email!);
     setValue("isFreelancer", userLogged?.isFreelancer!);
     setValue("github", userLogged?.socialMedia![0]);
+    setValue("idioma", userLogged?.idioma!);
+    setValue("experience", userLogged?.experiencia!);
+    setValue("categoria", userLogged?.categoria!);
   }, [userLogged]);
 
   const onSubmit = handleSubmit(async (data) => {
@@ -58,6 +97,9 @@ function UserForm() {
       socialMedia: (data.isFreelancer
         ? [github]
         : userLogged?.socialMedia) as string[],
+      idioma: data.idioma as string[],
+      experiencia: data.experience,
+      categoria: data.categoria as string[],
     };
 
     await updateUser(userLogged?._id!, payload);
@@ -112,42 +154,112 @@ function UserForm() {
           {renderFieldError("email")}
         </div>
 
-        <div className="col-span-2">
-          <Controller
-            control={control}
-            name="isFreelancer"
-            render={({ field }) => (
-              <div className="flex align-items-center">
-                <Checkbox
-                  inputId="isFreelancer"
-                  name={field.name}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  value={field.value}
-                  checked={!!field.value}
-                />
-                <label htmlFor="isFreelancer" className="ml-2">
-                  Soy freelancer
-                </label>
-              </div>
-            )}
-          />
-          {renderFieldError("isFreelancer")}
-        </div>
-
         {isFreelancer && (
-          <div className="col-span-2">
-            <label htmlFor="name" className="block text-gray-700">
-              Github url
-            </label>
-            <InputText
-              {...register("github")}
-              id="github"
-              name="github"
-              className="w-full"
-            />
-            {renderFieldError("github")}
-          </div>
+          <>
+            <div className="col-span-2">
+              <label htmlFor="name" className="block text-gray-700">
+                Github url
+              </label>
+              <InputText
+                {...register("github")}
+                id="github"
+                name="github"
+                className="w-full"
+              />
+              {renderFieldError("github")}
+            </div>
+            <div className="col-span-2">
+              <Controller
+                name="idioma"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <>
+                    <label
+                      htmlFor="idioma"
+                      className="block text-gray-700 mb-2"
+                    >
+                      Idiomas que manejas
+                    </label>
+                    <Chips
+                      {...field}
+                      id="idioma"
+                      name={field.name}
+                      value={field.value as string[]}
+                      className="w-full"
+                    />
+                    {fieldState.error && (
+                      <small className="p-error">
+                        {fieldState.error.message}
+                      </small>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+
+            <div className="col-span-2">
+              <Controller
+                name="experience"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <>
+                    <label
+                      htmlFor="experience"
+                      className="block text-gray-700 mb-2"
+                    >
+                      Nivel de experiencia
+                    </label>
+                    <Dropdown
+                      id="experience"
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.value)}
+                      options={Object.values(Category)}
+                      optionLabel="label"
+                      optionValue="value"
+                      placeholder="Selecciona tu nivel"
+                      className={`w-full ${
+                        fieldState.error ? "p-invalid" : ""
+                      }`}
+                    />
+                    {fieldState.error && (
+                      <small className="p-error">
+                        {fieldState.error.message}
+                      </small>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+
+            <div className="col-span-2">
+              <Controller
+                name="categoria"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <>
+                    <label
+                      htmlFor="categoria"
+                      className="block text-gray-700 mb-2"
+                    >
+                      Categorias que manejas
+                    </label>
+                    <Chips
+                      {...field}
+                      id="categoria"
+                      name={field.name}
+                      value={field.value as string[]}
+                      className="w-full"
+                    />
+                    {fieldState.error && (
+                      <small className="p-error">
+                        {fieldState.error.message}
+                      </small>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+          </>
         )}
 
         <div className="col-span-2">
